@@ -6,20 +6,19 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 public class UserRequestInfo {
-    private static final long serialVersionUID = 1L;
 
-    @NotNull(message = "用户名不允许为空")
-    @Length(min = 5, max = 20, message = "用户名为5到20位字符")
-    @Pattern(regexp = "^[a-zA-Z_]\\w{4,19}$", message = "用户名必须以字母下划线开头，可由字母数字下划线组成")
+    @NotNull(message = "{user.name.notnull}")
+    @Length(min = 5, max = 20, message = "{user.name.length}")
+    @Pattern(regexp = "^[a-zA-Z_]\\w{4,19}$", message = "{user.name.illegal}")
     private String userName;
 
     @NotNull
     private String password;
 
-    @Pattern(regexp = "^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w+)+)$", message = "邮箱格式不正确")
+    @Pattern(regexp = "\\w+@\\w+(\\.\\w{2,4})+", message = "{user.email.illegal}")
     private String email;
 
-    @Pattern(regexp = "^((13[0-9])|(15[^4,\\\\D])|(18[0,5-9]))\\\\d{8}$", message = "手机格式不正确")
+    @Pattern(regexp = "^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$", message = "{user.phone.illegal}")
     private String phone;
 
     private String question;

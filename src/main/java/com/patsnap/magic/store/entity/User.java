@@ -3,6 +3,7 @@ package com.patsnap.magic.store.entity;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
@@ -44,7 +45,7 @@ public class User {
     @LastModifiedDate
     private Date updateTime;
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Version
     private int versionId;
 
     public String getId() {

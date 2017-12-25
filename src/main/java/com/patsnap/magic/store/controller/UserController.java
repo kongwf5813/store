@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user/")
@@ -35,7 +36,7 @@ public class UserController {
 
     @RequestMapping(value = "register",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ServerResponse<String> register(@RequestBody UserRequestInfo userRequestInfo){
+    public ServerResponse<String> register(@Valid @RequestBody UserRequestInfo userRequestInfo){
         return iUserService.register(userRequestInfo);
     }
 
