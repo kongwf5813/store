@@ -9,8 +9,8 @@ public class Constant {
     public static final String TYPE_EMAIL = "email";
 
     public interface Role{
-        int ROLE_USER = 0; //普通用户
-        int ROLE_ADMIN = 1;//管理员
+        String ROLE_USER = "USER"; //普通用户
+        String ROLE_ADMIN = "ADMIN";//管理员
     }
 
 }

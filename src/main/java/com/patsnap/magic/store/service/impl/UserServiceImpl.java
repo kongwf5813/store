@@ -10,11 +10,13 @@ import com.patsnap.magic.store.util.MD5Util;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements IUserService{
+public class UserServiceImpl implements IUserService, UserDetailsService {
 
     @Autowired
     private IUserDao userDao;
@@ -23,14 +25,14 @@ public class UserServiceImpl implements IUserService{
     public ServerResponse<User> login(String username, String password) {
 
 
-        if(this.checkUserName(username)){
+        if (this.checkUserName(username)) {
             return ServerResponse.createByErrorMessage("用户名不合存在或者密码错误");
         }
 
         String md5Password = MD5Util.MD5EncodeUtf8(password);
-        User user =  userDao.findByUserNameAndPassword(username,md5Password);
+        User user = userDao.findByUsernameAndPassword(username, md5Password);
 
-        if(user == null){
+        if (user == null) {
             return ServerResponse.createByErrorMessage("用户名不合存在或者密码错误");
         }
 
@@ -40,16 +42,16 @@ public class UserServiceImpl implements IUserService{
     @Override
     public ServerResponse<String> register(UserRequestInfo userReq) {
 
-        if(this.checkUserName(userReq.getUserName())){
+        if (this.checkUserName(userReq.getUserName())) {
             return ServerResponse.createByErrorMessage("用户名已存在");
         }
 
-        if(this.checkEmail(userReq.getEmail())){
+        if (this.checkEmail(userReq.getEmail())) {
             return ServerResponse.createByErrorMessage("邮箱地址已存在");
         }
 
         User user = new User();
-        user.setUserName(userReq.getUserName());
+        user.setUsername(userReq.getUserName());
         user.setRole(Constant.Role.ROLE_USER);
         user.setEmail(userReq.getEmail());
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
@@ -58,7 +60,7 @@ public class UserServiceImpl implements IUserService{
         user.setPhone(userReq.getPhone());
 
         User savedUser = userDao.save(user);
-        if(savedUser.getId() == null){
+        if (savedUser.getId() == null) {
             return ServerResponse.createByErrorMessage("注册失败");
         }
         return ServerResponse.createBySuccessMessage("注册成功");
@@ -99,20 +101,26 @@ public class UserServiceImpl implements IUserService{
         return null;
     }
 
-    private boolean checkUserName(String userName){
-        if (StringUtils.isBlank(userName)){
+    private boolean checkUserName(String userName) {
+        if (StringUtils.isBlank(userName)) {
             return false;
         }
 
-        User user = userDao.findByUserName(userName);
+        User user = userDao.findByUsername(userName);
         return user != null;
     }
 
-    private boolean checkEmail(String email){
-        if (StringUtils.isBlank(email)){
+    private boolean checkEmail(String email) {
+        if (StringUtils.isBlank(email)) {
             return false;
         }
         User user = userDao.findByEmail(email);
         return user != null;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+
+        return userDao.findByUsername(s);
     }
 }
