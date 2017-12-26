@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS `store` CHARSET "UTF-8";
+USE store;
+
 CREATE TABLE `order_item` (
   `id` varchar(255) NOT NULL,
   `create_time` datetime DEFAULT NULL,

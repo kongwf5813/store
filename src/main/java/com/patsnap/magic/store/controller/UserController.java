@@ -24,19 +24,22 @@ public class UserController {
     @Autowired
     private IUserService iUserService;
 
-    @RequestMapping(value = "login",method = RequestMethod.POST)
+    @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse<User> login(String username, String password, HttpSession session){
-        ServerResponse<User> response = iUserService.login(username,password);
-        if(response.isSuccess()){
-            session.setAttribute(Constant.CURRENT_USER,response.getData());
+    public ServerResponse<User> login(String username, String password, HttpSession session) {
+        ServerResponse<User> response = iUserService.login(username, password);
+        if (response.isSuccess()) {
+            session.setAttribute(Constant.CURRENT_USER, response.getData());
         }
         return response;
     }
 
-    @RequestMapping(value = "register",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "register",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ServerResponse<String> register(@Valid @RequestBody UserRequestInfo userRequestInfo){
+    public ServerResponse<String> register(@Valid @RequestBody UserRequestInfo userRequestInfo) {
         return iUserService.register(userRequestInfo);
     }
 
