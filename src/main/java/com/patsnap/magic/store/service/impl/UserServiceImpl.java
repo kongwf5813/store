@@ -27,18 +27,14 @@ public class UserServiceImpl implements IUserService{
             return ServerResponse.createByErrorMessage("用户名不合存在或者密码错误");
         }
 
-        User user = new User();
-        user.setUserName(username);
         String md5Password = MD5Util.MD5EncodeUtf8(password);
-        user.setPassword(md5Password);
-        User userInDB =  userDao.findOne(Example.of(user));
+        User user =  userDao.findByUserNameAndPassword(username,md5Password);
 
-        if(userInDB == null){
+        if(user == null){
             return ServerResponse.createByErrorMessage("用户名不合存在或者密码错误");
         }
 
-        user.setPassword("");
-        return ServerResponse.createBySuccess("登录成功",user);
+        return ServerResponse.createBySuccess("登录成功", user);
     }
 
     @Override
@@ -107,17 +103,16 @@ public class UserServiceImpl implements IUserService{
         if (StringUtils.isBlank(userName)){
             return false;
         }
-        User user = new User();
-        user.setUserName(userName);
-        return userDao.exists(Example.of(user));
+
+        User user = userDao.findByUserName(userName);
+        return user != null;
     }
 
     private boolean checkEmail(String email){
         if (StringUtils.isBlank(email)){
             return false;
         }
-        User user = new User();
-        user.setEmail(email);
-        return userDao.exists(Example.of(user));
+        User user = userDao.findByEmail(email);
+        return user != null;
     }
 }
