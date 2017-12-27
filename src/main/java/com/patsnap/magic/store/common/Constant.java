@@ -13,4 +13,6 @@ public class Constant {
         String ROLE_ADMIN = "ADMIN";//管理员
     }
 
+
+    public static final String PERMISSION_DENIED= "user.permission.denied";
 }

@@ -2,7 +2,6 @@ package com.patsnap.magic.store.entity;
 
 import com.patsnap.magic.store.common.Constant;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Version;
@@ -152,7 +151,6 @@ public class User implements UserDetails{
     public String getPassword() {
         return password;
     }
-
 
     @Override
     public boolean isAccountNonExpired() {

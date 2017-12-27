@@ -21,24 +21,33 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     @Autowired
     private IUserDao userDao;
 
+    /**
+     * 用户登录接口实现
+     * @param username 用户名
+     * @param password 密码
+     * @return ServerResponse<User>
+     */
     @Override
     public ServerResponse<User> login(String username, String password) {
 
-
-        if (this.checkUserName(username)) {
+        if (!this.checkUserName(username)) {
             return ServerResponse.createByErrorMessage("用户名不合存在或者密码错误");
         }
 
         String md5Password = MD5Util.MD5EncodeUtf8(password);
         User user = userDao.findByUsernameAndPassword(username, md5Password);
-
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户名不合存在或者密码错误");
         }
 
-        return ServerResponse.createBySuccess("登录成功", user);
+        return ServerResponse.createBySuccess("登录成功", null);
     }
 
+    /**
+     * 用户注册接口实现
+     * @param userReq 用户请求参数
+     * @return ServerResponse
+     */
     @Override
     public ServerResponse<String> register(UserRequestInfo userReq) {
 
@@ -54,7 +63,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
         user.setUsername(userReq.getUserName());
         user.setRole(Constant.Role.ROLE_USER);
         user.setEmail(userReq.getEmail());
-        user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
+        user.setPassword(MD5Util.MD5EncodeUtf8(userReq.getPassword()));
         user.setQuestion(userReq.getQuestion());
         user.setAnswer(userReq.getAnswer());
         user.setPhone(userReq.getPhone());
@@ -64,6 +73,22 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
             return ServerResponse.createByErrorMessage("注册失败");
         }
         return ServerResponse.createBySuccessMessage("注册成功");
+    }
+
+    /**
+     * Spring Security默认用户认证实现
+     * JPA实现
+     * @param s 用户名
+     * @return UserDetails
+     * @throws UsernameNotFoundException
+     */
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        User user = userDao.findByUsername(s);
+        if (user == null){
+            throw new UsernameNotFoundException("用户没有权限");
+        }
+        return user;
     }
 
     @Override
@@ -116,11 +141,5 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
         }
         User user = userDao.findByEmail(email);
         return user != null;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-
-        return userDao.findByUsername(s);
     }
 }

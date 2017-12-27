@@ -1,6 +1,8 @@
 package com.patsnap.magic.store.config;
 
+import com.patsnap.magic.store.common.Constant;
 import com.patsnap.magic.store.service.impl.UserServiceImpl;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,11 +28,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .anyRequest().authenticated()
-                .and().formLogin()
-                .loginPage("/login").failureUrl("")
-                .permitAll().and()
-                .logout().permitAll();
+        http.authorizeRequests()   //开始请求权限配置
+                .antMatchers("/user/register","/user/login").permitAll()
+                .antMatchers("/user/**").hasAnyRole(Constant.Role.ROLE_ADMIN, Constant.Role.ROLE_USER) //拥有ROLE_ADMIN,ROLE_USER都可以访问
+                .antMatchers("/manager/**").hasRole(Constant.Role.ROLE_ADMIN);  //只有拥有ROLE_ADMIN的才有权限访问
+//                .anyRequest().authenticated() //其余需要登录认证
+                  //.and().formLogin().loginPage("/user/login").permitAll(); //登录可以任意访问
+//                .and().logout().permitAll(); //登出可
+        http.csrf().disable();
     }
 }
