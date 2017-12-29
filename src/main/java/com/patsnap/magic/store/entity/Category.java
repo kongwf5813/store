@@ -3,16 +3,15 @@ package com.patsnap.magic.store.entity;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -21,7 +20,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table
 @EntityListeners(AuditingEntityListener.class)
-public class OrderItem {
+public class Category {
 
     @Id
     @GenericGenerator(name = "uuid", strategy = "uuid")
@@ -30,18 +29,13 @@ public class OrderItem {
     private String id;
 
     @Column(length = 32)
-    private String userId;
+    private String parentId;
 
-    @Column(length = 20)
-    private long orderNo;
+    private String name;
 
-    @Column(length = 32)
-    private String productId;
-    private String productName;
-    private String productUrl;
-    private BigDecimal currentPrice;
-    private int quantity;
-    private BigDecimal totalPrice;
+    private Boolean status;
+
+    private Integer sortOrder;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
@@ -51,7 +45,7 @@ public class OrderItem {
     @LastModifiedDate
     private Date updateTime;
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Version
     private int versionId;
 
     public String getId() {
@@ -62,68 +56,36 @@ public class OrderItem {
         this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
-    public long getOrderNo() {
-        return orderNo;
+    public String getName() {
+        return name;
     }
 
-    public void setOrderNo(long orderNo) {
-        this.orderNo = orderNo;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getProductId() {
-        return productId;
+    public Boolean getStatus() {
+        return status;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
-    public String getProductName() {
-        return productName;
+    public Integer getSortOrder() {
+        return sortOrder;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getProductUrl() {
-        return productUrl;
-    }
-
-    public void setProductUrl(String productUrl) {
-        this.productUrl = productUrl;
-    }
-
-    public BigDecimal getCurrentPrice() {
-        return currentPrice;
-    }
-
-    public void setCurrentPrice(BigDecimal currentPrice) {
-        this.currentPrice = currentPrice;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
     }
 
     public Date getCreateTime() {
@@ -148,5 +110,21 @@ public class OrderItem {
 
     public void setVersionId(int versionId) {
         this.versionId = versionId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Category category = (Category) o;
+
+        return !(id != null ? !id.equals(category.id) : category.id != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

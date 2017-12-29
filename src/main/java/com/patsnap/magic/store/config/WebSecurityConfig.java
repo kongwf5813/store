@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -28,13 +29,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()   //开始请求权限配置
-                .antMatchers("/user/register","/user/login").permitAll()
-                .antMatchers("/user/**").hasAnyRole(Constant.Role.ROLE_ADMIN, Constant.Role.ROLE_USER) //拥有ROLE_ADMIN,ROLE_USER都可以访问
-                .antMatchers("/manager/**").hasRole(Constant.Role.ROLE_ADMIN);  //只有拥有ROLE_ADMIN的才有权限访问
-//                .anyRequest().authenticated() //其余需要登录认证
-                  //.and().formLogin().loginPage("/user/login").permitAll(); //登录可以任意访问
-//                .and().logout().permitAll(); //登出可
+        http.authorizeRequests()
+                .anyRequest().authenticated() //4
+                .and()
+                .formLogin()
+                .loginPage("/user/login")
+                .failureUrl("/user/login?error")
+                .permitAll() //5
+                .and()
+                .logout().permitAll(); //6
         http.csrf().disable();
     }
 }

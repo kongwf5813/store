@@ -22,19 +22,15 @@ public class ProductController {
 
     @RequestMapping("detail")
     @ResponseBody
-    public ServerResponse<ProductDetailVo> detail(Integer productId) {
+    public ServerResponse<ProductDetailVo> detail(String productId) {
         return iProductService.getProductDetail(productId);
     }
 
     @RequestMapping("list")
     @ResponseBody
     public ServerResponse<Page<Product>> list(@RequestParam(value = "keyword", required = false) String keyword,
-                                              @RequestParam(value = "categoryId", required = false) Integer categoryId,
                                               @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
-                                              @RequestParam(value = "orderBy", defaultValue = "") String orderBy) {
-        return iProductService.getProductByKeywordCategory(keyword, categoryId, pageNum, pageSize, orderBy);
+                                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        return iProductService.searchProductLike(keyword, pageNum, pageSize);
     }
-
-
 }

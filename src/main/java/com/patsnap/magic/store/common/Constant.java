@@ -13,6 +13,11 @@ public class Constant {
         String ROLE_ADMIN = "ADMIN";//管理员
     }
 
+    public  interface ProductStatus{
+        int ON_SALE = 1;
+        int OFF_SALE = 0;
+    }
+
 
     public static final String PERMISSION_DENIED= "user.permission.denied";
 }

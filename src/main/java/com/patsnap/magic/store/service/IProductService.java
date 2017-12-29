@@ -6,20 +6,19 @@ import com.patsnap.magic.store.entity.Product;
 import com.patsnap.magic.store.vo.ProductDetailVo;
 import org.springframework.data.domain.Page;
 
-
 public interface IProductService {
 
     ServerResponse saveOrUpdateProduct(Product product);
 
-    ServerResponse<String> setSaleStatus(Integer productId, Integer status);
+    ServerResponse<String> setSaleStatus(String productId, Integer status);
 
-    ServerResponse<ProductDetailVo> manageProductDetail(Integer productId);
+    ServerResponse<ProductDetailVo> manageProductDetail(String productId);
 
-    ServerResponse<Page<Product>> getProductList(int pageNum, int pageSize);
+    ServerResponse<Page<ProductDetailVo>> getProductList(int pageNum, int pageSize);
 
-    ServerResponse<Page<Product>> searchProduct(String productName, Integer productId, int pageNum, int pageSize);
+    ServerResponse<Page<Product>> searchProductLike(String productName, int pageNum, int pageSize);
 
-    ServerResponse<ProductDetailVo> getProductDetail(Integer productId);
+    ServerResponse<ProductDetailVo> getProductDetail(String productId);
 
-    ServerResponse<Page<Product>> getProductByKeywordCategory(String keyword, Integer categoryId, int pageNum, int pageSize, String orderBy);
+    ServerResponse<Page<Product>> getProductByKeywordCategory(String keyword, String categoryId, int pageNum, int pageSize, String orderBy);
 }

@@ -5,8 +5,9 @@ import java.util.Date;
 
 public class ProductDetailVo {
 
-    private String  id;
-    private Integer categoryId;
+    private String id;
+    private String categoryId;
+    private String parentCategoryId;
     private String name;
     private String subtitle;
     private String mainImage;
@@ -17,9 +18,7 @@ public class ProductDetailVo {
     private Integer status;
     private Date createTime;
     private Date updateTime;
-
     private String imageHost;
-    private Integer parentCategoryId;
 
     public String getId() {
         return id;
@@ -27,14 +26,6 @@ public class ProductDetailVo {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
     }
 
     public String getName() {
@@ -125,11 +116,19 @@ public class ProductDetailVo {
         this.imageHost = imageHost;
     }
 
-    public Integer getParentCategoryId() {
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getParentCategoryId() {
         return parentCategoryId;
     }
 
-    public void setParentCategoryId(Integer parentCategoryId) {
+    public void setParentCategoryId(String parentCategoryId) {
         this.parentCategoryId = parentCategoryId;
     }
 }

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 
 @Controller
-@RequestMapping(value = "/manage/user/")
+@RequestMapping(value = "/manage/")
 public class UserManageController {
 
     @Autowired
