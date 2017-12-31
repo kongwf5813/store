@@ -1,11 +1,10 @@
-package com.patsnap.magic.store.service.impl;
+package com.patsnap.magic.store.service;
 
 import com.patsnap.magic.store.common.Constant;
 import com.patsnap.magic.store.common.ServerResponse;
 import com.patsnap.magic.store.dao.IUserDao;
 import com.patsnap.magic.store.entity.User;
 import com.patsnap.magic.store.request.UserRequestInfo;
-import com.patsnap.magic.store.service.IUserService;
 import com.patsnap.magic.store.util.MD5Util;
 
 import org.apache.commons.lang.StringUtils;

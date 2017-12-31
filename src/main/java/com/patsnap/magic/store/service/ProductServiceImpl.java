@@ -1,4 +1,4 @@
-package com.patsnap.magic.store.service.impl;
+package com.patsnap.magic.store.service;
 
 import com.patsnap.magic.store.common.Constant;
 import com.patsnap.magic.store.common.ResponseCode;
@@ -7,7 +7,6 @@ import com.patsnap.magic.store.dao.ICategoryDao;
 import com.patsnap.magic.store.dao.IProductDao;
 import com.patsnap.magic.store.entity.Category;
 import com.patsnap.magic.store.entity.Product;
-import com.patsnap.magic.store.service.IProductService;
 import com.patsnap.magic.store.vo.ProductDetailVo;
 
 import org.apache.commons.lang.StringUtils;
@@ -112,11 +111,6 @@ public class ProductServiceImpl implements IProductService {
             return ServerResponse.createByErrorMessage("产品已下架或者删除");
         }
         return ServerResponse.createBySuccess(this.setProductDetailVo(product));
-    }
-
-    @Override
-    public ServerResponse<Page<Product>> getProductByKeywordCategory(String keyword, String categoryId, int pageNum, int pageSize, String orderBy) {
-        return null;
     }
 
     private ProductDetailVo setProductDetailVo(Product product) {

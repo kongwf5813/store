@@ -7,12 +7,11 @@ import com.patsnap.magic.store.service.IProductService;
 import com.patsnap.magic.store.vo.ProductDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/product/")
 public class ProductController {
 
@@ -21,13 +20,11 @@ public class ProductController {
 
 
     @RequestMapping("detail")
-    @ResponseBody
     public ServerResponse<ProductDetailVo> detail(String productId) {
         return iProductService.getProductDetail(productId);
     }
 
     @RequestMapping("list")
-    @ResponseBody
     public ServerResponse<Page<Product>> list(@RequestParam(value = "keyword", required = false) String keyword,
                                               @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                               @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {

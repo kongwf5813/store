@@ -4,6 +4,8 @@ import com.patsnap.magic.store.entity.OrderItem;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface IOrderItemDao extends JpaRepository<OrderItem, String> {
+import java.util.List;
 
+public interface IOrderItemDao extends JpaRepository<OrderItem, String> {
+    List<OrderItem> findByOrderNoAndUserId(long orderNo, String userId);
 }
