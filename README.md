@@ -8,6 +8,6 @@ Step 1. 修改Maven setting, 使用阿里云Nexus仓库
     <mirrorOf>central</mirrorOf>
 </mirror>`
 
-Step 2. 运行数据库脚本sql/store.sql, 创建数据库
+Step 2. 运行数据库脚本test/resources/schema.sql, 创建store数据库，不需要创建表
 
-Step 3. 可以通过设置spring.jpa.hibernate.ddl-auto=update 进行更新表操作，每次当修改entity，hibernate会自动创建表或者更新表结构
+Step 3. 在BaseTest.java中右击运行All Tests 就可以创建表格和插入默认数据
