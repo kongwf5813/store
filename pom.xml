@@ -17,6 +17,7 @@
 		<module>category-service</module>
 		<module>user-service</module>
 		<module>order-service</module>
+		<module>eureka-server</module>
 	</modules>
 
 	<parent>
