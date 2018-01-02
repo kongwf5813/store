@@ -40,10 +40,11 @@ public class ProductServiceImpl implements IProductService {
                     product.setMainImage(subImageArray[0]);
                 }
             }
-            if (productDao.save(product) != null) {
-                return ServerResponse.createBySuccess("更新产品成功");
+            Product savedProduct = productDao.save(product);
+            if (savedProduct != null) {
+                return ServerResponse.createBySuccess("更新产品成功", savedProduct);
             }
-            return ServerResponse.createBySuccess("更新产品失败");
+            return ServerResponse.createByErrorMessage("更新产品失败");
         }
         return ServerResponse.createByErrorMessage("新增或更新产品参数不正确");
     }
@@ -133,6 +134,7 @@ public class ProductServiceImpl implements IProductService {
         } else {
             productDetailVo.setParentCategoryId(category.getParentId());
         }
+
         productDetailVo.setCreateTime(product.getCreateTime());
         productDetailVo.setUpdateTime(product.getUpdateTime());
 

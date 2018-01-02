@@ -12,43 +12,77 @@ File Encoding         : 65001
 
 Date: 2017-12-26 15:35:55
 */
-
 SET FOREIGN_KEY_CHECKS=0;
-
 
 CREATE DATABASE IF NOT EXISTS `store`  DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 USE store;
 
 -- ----------------------------
--- Table structure for order_item
+-- Table structure for t_category
 -- ----------------------------
-DROP TABLE IF EXISTS `order_item`;
-CREATE TABLE `order_item` (
+DROP TABLE IF EXISTS `t_category`;
+CREATE TABLE `t_category` (
+  `id` varchar(32) NOT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `parent_id` varchar(32) DEFAULT NULL,
+  `sort_order` int(11) DEFAULT NULL,
+  `status` bit(1) DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `version` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- ----------------------------
+-- Table structure for t_order
+-- ----------------------------
+DROP TABLE IF EXISTS `t_order`;
+CREATE TABLE `t_order` (
+  `id` varchar(32) NOT NULL,
+  `close_time` datetime DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `order_no` bigint(20) DEFAULT NULL,
+  `payment` decimal(19,2) DEFAULT NULL,
+  `payment_time` datetime DEFAULT NULL,
+  `payment_type` int(11) NOT NULL,
+  `postage` int(11) NOT NULL,
+  `send_time` datetime DEFAULT NULL,
+  `status` int(11) NOT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `user_id` varchar(32) DEFAULT NULL,
+  `version` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- ----------------------------
+-- Table structure for t_order_item
+-- ----------------------------
+DROP TABLE IF EXISTS `t_order_item`;
+CREATE TABLE `t_order_item` (
   `id` varchar(32) NOT NULL,
   `create_time` datetime DEFAULT NULL,
   `current_price` decimal(19,2) DEFAULT NULL,
   `order_no` bigint(20) DEFAULT NULL,
-  `product_id` varchar(255) DEFAULT NULL,
+  `product_id` varchar(32) DEFAULT NULL,
   `product_name` varchar(255) DEFAULT NULL,
   `product_url` varchar(255) DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `total_price` decimal(19,2) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
   `user_id` varchar(32) DEFAULT NULL,
-  `version_id` int(11) NOT NULL,
+  `version` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of order_item
+-- Table structure for t_product
 -- ----------------------------
-
--- ----------------------------
--- Table structure for product
--- ----------------------------
-DROP TABLE IF EXISTS `product`;
-CREATE TABLE `product` (
+DROP TABLE IF EXISTS `t_product`;
+CREATE TABLE `t_product` (
   `id` varchar(32) NOT NULL,
   `category_id` varchar(32) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
@@ -61,19 +95,15 @@ CREATE TABLE `product` (
   `sub_images` varchar(255) DEFAULT NULL,
   `subtitle` varchar(255) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
-  `version_id` int(11) NOT NULL,
+  `version` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of product
+-- Table structure for t_user
 -- ----------------------------
-
--- ----------------------------
--- Table structure for user
--- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
+DROP TABLE IF EXISTS `t_user`;
+CREATE TABLE `t_user` (
   `id` varchar(32) NOT NULL,
   `answer` varchar(255) DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
@@ -81,13 +111,9 @@ CREATE TABLE `user` (
   `password` varchar(255) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
   `question` varchar(255) DEFAULT NULL,
-  `role` int(11) NOT NULL,
+  `role` varchar(255) DEFAULT NULL,
   `update_time` datetime DEFAULT NULL,
-  `user_name` varchar(255) DEFAULT NULL,
-  `version_id` int(11) NOT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `version` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of user
--- ----------------------------

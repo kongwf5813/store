@@ -8,7 +8,7 @@ public interface IUserService {
 
     ServerResponse<User> login(String username, String password);
 
-    ServerResponse<String> register(UserRequestInfo user);
+    ServerResponse<User> register(UserRequestInfo user);
 
     ServerResponse<String> resetPassword(String passwordOld,String passwordNew,User user);
 

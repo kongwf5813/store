@@ -12,14 +12,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 @Entity
-@Table
+@Table(name = "t_product")
 @EntityListeners(AuditingEntityListener.class)
 public class Product {
 
@@ -52,8 +52,8 @@ public class Product {
     @LastModifiedDate
     private Date updateTime;
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int versionId;
+    @Version
+    private int version;
 
     public String getId() {
         return id;
@@ -151,11 +151,11 @@ public class Product {
         this.updateTime = updateTime;
     }
 
-    public int getVersionId() {
-        return versionId;
+    public int getVersion() {
+        return version;
     }
 
-    public void setVersionId(int versionId) {
-        this.versionId = versionId;
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

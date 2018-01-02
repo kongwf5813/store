@@ -1,41 +1,45 @@
 package com.patsnap.magic.store.service;
 
+import com.patsnap.magic.store.BaseTest;
 import com.patsnap.magic.store.common.ServerResponse;
+import com.patsnap.magic.store.dao.ICategoryDao;
 import com.patsnap.magic.store.entity.Category;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Created by Owen on 2017/12/31.
  */
-public class CategoryServiceImplTest {
+public class CategoryServiceImplTest extends BaseTest{
 
     @Autowired
-    private CategoryServiceImpl categoryService;
+    private ICategoryService categoryService;
 
     @Test
-    public void testAddCategory() throws Exception {
-        //一级分类
-        ServerResponse response = categoryService.addCategory("女装",null);
-        //二级分类
-        String parentId = ((Category)response.getData()).getId();
-        response = categoryService.addCategory("毛衣",parentId);
+    public void testCategoryAll() throws Exception {
+        //测试新增分类接口
+        ServerResponse response = categoryService.addCategory("男人装",null);
+        Category saveCategory = (Category)response.getData();
+        Assert.assertNotNull(saveCategory);
+
+        //测试更新分类接口
+        response =  categoryService.updateCategoryName(saveCategory.getId(), "男装");
         Assert.assertNotNull(response.getData());
-    }
 
-    @Test
-    public void testUpdateCategoryName() throws Exception {
+        //测试查询子分类接口
+        response = categoryService.getChildrenParallelCategory(saveCategory.getId());
+        Assert.assertNotNull(response.getData());
 
-    }
-
-    @Test
-    public void testGetChildrenParallelCategory() throws Exception {
-
-    }
-
-    @Test
-    public void testSelectCategoryAndChildrenById() throws Exception {
-
+        //测试递归查询本分类及及其子分类接口
+        response = categoryService.selectCategoryAndChildrenById(saveCategory.getId());
+        List<String> result = (List<String>) response.getData();
+        Assert.assertTrue(result.size() == 1);
     }
 }

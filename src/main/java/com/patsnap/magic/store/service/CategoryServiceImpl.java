@@ -50,13 +50,14 @@ public class CategoryServiceImpl implements ICategoryService{
         if(StringUtils.isBlank(categoryId) || StringUtils.isBlank(categoryName)){
             return ServerResponse.createByErrorMessage("更新品类参数错误");
         }
-        Category category = new Category();
-        category.setId(categoryId);
-        category.setName(categoryName);
 
-        Category savedCategory = categoryDao.save(category);
-        if(savedCategory != null){
-            return ServerResponse.createBySuccess("更新品类名字成功", savedCategory);
+        Category existOne = categoryDao.findOne(categoryId);
+        if (existOne != null){
+            existOne.setName(categoryName);
+            Category savedCategory = categoryDao.save(existOne);
+            if(savedCategory != null){
+                return ServerResponse.createBySuccess("更新品类名字成功", savedCategory);
+            }
         }
         return ServerResponse.createByErrorMessage("更新品类名字失败");
     }
@@ -78,7 +79,6 @@ public class CategoryServiceImpl implements ICategoryService{
     public ServerResponse<List<String>> selectCategoryAndChildrenById(String categoryId){
         Set<Category> categorySet = Sets.newHashSet();
         findChildCategory(categorySet,categoryId);
-
 
         List<String> categoryIdList = Lists.newArrayList();
         if(categoryId != null){

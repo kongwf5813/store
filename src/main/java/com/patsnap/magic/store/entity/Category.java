@@ -3,7 +3,6 @@ package com.patsnap.magic.store.entity;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Version;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
@@ -16,9 +15,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 @Entity
-@Table
+@Table(name = "t_category")
 @EntityListeners(AuditingEntityListener.class)
 public class Category {
 
@@ -46,7 +46,7 @@ public class Category {
     private Date updateTime;
 
     @Version
-    private int versionId;
+    private int version;
 
     public String getId() {
         return id;
@@ -104,12 +104,12 @@ public class Category {
         this.updateTime = updateTime;
     }
 
-    public int getVersionId() {
-        return versionId;
+    public int getVersion() {
+        return version;
     }
 
-    public void setVersionId(int versionId) {
-        this.versionId = versionId;
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     @Override

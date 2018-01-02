@@ -40,8 +40,8 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户名不合存在或者密码错误");
         }
-
-        return ServerResponse.createBySuccess("登录成功", null);
+        user.setPassword("");
+        return ServerResponse.createBySuccess("登录成功", user);
     }
 
     /**
@@ -51,15 +51,15 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
      * @return ServerResponse<String>
      */
     @Override
-    public ServerResponse<String> register(UserRequestInfo userReq) {
+    public ServerResponse register(UserRequestInfo userReq) {
 
         if (StringUtils.isBlank(userReq.getUserName())
-                || userDao.findByUsername(userReq.getUserName()) == null) {
+                || userDao.findByUsername(userReq.getUserName()) != null) {
             return ServerResponse.createByErrorMessage("用户名已存在");
         }
 
         if (StringUtils.isBlank(userReq.getEmail())
-                || userDao.findByEmail(userReq.getEmail()) == null) {
+                || userDao.findByEmail(userReq.getEmail()) != null) {
             return ServerResponse.createByErrorMessage("邮箱地址已存在");
         }
 
@@ -73,10 +73,11 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
         user.setPhone(userReq.getPhone());
 
         User savedUser = userDao.save(user);
-        if (savedUser.getId() == null) {
+        if (savedUser == null) {
             return ServerResponse.createByErrorMessage("注册失败");
         }
-        return ServerResponse.createBySuccessMessage("注册成功");
+        savedUser.setPassword("");
+        return ServerResponse.createBySuccess("注册成功",savedUser);
     }
 
     /**
@@ -88,11 +89,13 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
      */
     @Override
     public ServerResponse<User> updateInformation(User user) {
-        if (!userDao.exists(user.getId())) {
+        User userInDB = userDao.findOne(user.getId());
+        if (userInDB == null) {
             return ServerResponse.createByErrorMessage("用户不存在,请重新登录");
         }
 
-        User userSaved = userDao.save(user);
+        userInDB.setPhone(user.getPhone());
+        User userSaved = userDao.save(userInDB);
         if (userSaved != null) {
             return ServerResponse.createBySuccess("更新个人信息成功", userSaved);
         }

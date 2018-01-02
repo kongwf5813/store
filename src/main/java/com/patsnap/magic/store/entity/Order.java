@@ -56,8 +56,8 @@ public class Order {
     @LastModifiedDate
     private Date updateTime;
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int versionId;
+    @Version
+    private int version;
 
     public String getId() {
         return id;
@@ -163,11 +163,11 @@ public class Order {
         this.updateTime = updateTime;
     }
 
-    public int getVersionId() {
-        return versionId;
+    public int getVersion() {
+        return version;
     }
 
-    public void setVersionId(int versionId) {
-        this.versionId = versionId;
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

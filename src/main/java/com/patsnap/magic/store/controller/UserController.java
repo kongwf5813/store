@@ -6,6 +6,8 @@ import com.patsnap.magic.store.entity.User;
 import com.patsnap.magic.store.request.UserRequestInfo;
 import com.patsnap.magic.store.service.IUserService;
 
+import com.netflix.ribbon.proxy.annotation.Http;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -39,8 +41,12 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ServerResponse<String> register(@Valid @RequestBody UserRequestInfo userRequestInfo) {
-        return iUserService.register(userRequestInfo);
+    public ServerResponse<User> register(@Valid @RequestBody UserRequestInfo userRequestInfo, HttpSession session) {
+        ServerResponse<User> response = iUserService.register(userRequestInfo);
+        if (response.isSuccess()) {
+            session.setAttribute(Constant.CURRENT_USER, response.getData());
+        }
+        return response;
     }
 
     @RequestMapping(value = "update_information",

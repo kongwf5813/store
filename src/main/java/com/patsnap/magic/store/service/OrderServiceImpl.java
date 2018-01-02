@@ -1,6 +1,5 @@
 package com.patsnap.magic.store.service;
 
-import com.google.common.collect.Lists;
 import com.patsnap.magic.store.common.Constant;
 import com.patsnap.magic.store.common.ServerResponse;
 import com.patsnap.magic.store.dao.IOrderDao;
@@ -9,11 +8,22 @@ import com.patsnap.magic.store.entity.Order;
 import com.patsnap.magic.store.entity.OrderItem;
 import com.patsnap.magic.store.vo.OrderItemVo;
 import com.patsnap.magic.store.vo.OrderVo;
+
+import com.google.common.collect.Lists;
+
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Owen on 2017/12/31.
@@ -28,6 +38,42 @@ public class OrderServiceImpl implements IOrderService {
     private IOrderItemDao orderItemDao;
 
     @Override
+    public ServerResponse<OrderVo> createOrder(String userId, List<OrderItem> orderItems) {
+        if (CollectionUtils.isEmpty(orderItems)) {
+            return ServerResponse.createByErrorMessage("订单列表不能为空");
+        }
+        if (StringUtils.isBlank(userId)){
+            return ServerResponse.createByErrorMessage("用户未登录");
+        }
+        Order order = new Order();
+        order.setUserId(userId);
+        order.setOrderNo(generateOrderNo());
+        order.setStatus(Constant.OrderStatus.NO_PAY);
+        DateTime sysdate = new DateTime();
+        order.setCreateTime(sysdate.toDate());
+        order.setUpdateTime(sysdate.toDate());
+        order.setEndTime(sysdate.plusDays(1).toDate());
+        Order savedOrder = orderDao.save(order);
+        if (savedOrder == null) {
+            return ServerResponse.createByErrorMessage("创建订单失败");
+        }
+
+        orderItems.forEach(orderItem -> {
+            orderItem.setOrderNo(savedOrder.getOrderNo());
+            orderItem.setCreateTime(savedOrder.getCreateTime());
+            orderItem.setUpdateTime(savedOrder.getUpdateTime());
+            orderItem.setUserId(userId);
+        });
+        List<OrderItem> savedOderItems = orderItemDao.save(orderItems);
+        if (savedOderItems == null){
+            return ServerResponse.createByErrorMessage("创建订单列表失败");
+        }
+
+        OrderVo orderVo = setOrderVo(savedOrder, savedOderItems);
+        return ServerResponse.createBySuccess("创建订单成功", orderVo);
+    }
+
+    @Override
     public ServerResponse<String> cancel(String userId, Long orderNo) {
         Order order = orderDao.findByUserIdAndOrderNo(userId, orderNo);
         if (order == null) {
@@ -36,20 +82,17 @@ public class OrderServiceImpl implements IOrderService {
         if (order.getStatus() != Constant.OrderStatus.NO_PAY) {
             return ServerResponse.createByErrorMessage("已付款,无法取消订单");
         }
-        Order updateOrder = new Order();
-        updateOrder.setId(order.getId());
-        updateOrder.setStatus(Constant.OrderStatus.CANCELED);
 
-        Order savedOrder = orderDao.save(updateOrder);
+        order.setStatus(Constant.OrderStatus.CANCELED);
+        DateTime dateTime = new DateTime();
+        order.setUpdateTime(dateTime.toDate());
+        order.setCloseTime(dateTime.toDate());
+
+        Order savedOrder = orderDao.save(order);
         if (savedOrder != null) {
             return ServerResponse.createBySuccess();
         }
         return ServerResponse.createByError();
-    }
-
-    @Override
-    public ServerResponse getOrderCartProduct(String userId) {
-        return null;
     }
 
     @Override
@@ -121,4 +164,10 @@ public class OrderServiceImpl implements IOrderService {
         }
         return orderVoList;
     }
+
+    private long generateOrderNo() {
+        long currentTime = System.currentTimeMillis();
+        return currentTime + new Random().nextInt(100);
+    }
+
 }
