@@ -6,10 +6,18 @@
 	<groupId>com.patsnap.magic</groupId>
 	<artifactId>store</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 
 	<name>store</name>
 	<description>Magic store</description>
+
+	<modules>
+		<module>api-service</module>
+		<module>product-service</module>
+		<module>category-service</module>
+		<module>user-service</module>
+		<module>order-service</module>
+	</modules>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
