@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements IUserService, UserDetailsService {
+public class UserServiceImpl implements IUserService {
 
     @Autowired
     private IUserDao userDao;
@@ -123,21 +123,5 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
             return ServerResponse.createBySuccessMessage("密码更新成功");
         }
         return ServerResponse.createByErrorMessage("密码更新失败");
-    }
-
-    /**
-     * Spring Security默认用户认证接口，通过JPA方式实现
-     *
-     * @param username 用户名
-     * @return UserDetails
-     * @throws UsernameNotFoundException
-     */
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("用户没有权限");
-        }
-        return user;
     }
 }

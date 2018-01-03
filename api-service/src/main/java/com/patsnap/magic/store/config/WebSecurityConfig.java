@@ -1,6 +1,6 @@
 package com.patsnap.magic.store.config;
 
-import com.patsnap.magic.store.service.UserServiceImpl;
+import com.patsnap.magic.store.service.UserDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,7 +16,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     UserDetailsService customUserService() {
-        return new UserServiceImpl();
+        return new UserDetailServiceImpl();
     }
 
     @Override

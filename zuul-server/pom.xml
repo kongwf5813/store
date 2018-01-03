@@ -12,30 +12,24 @@
     </parent>
 
     <groupId>com.patsnap.magic</groupId>
-    <artifactId>category-service</artifactId>
+    <artifactId>zuul-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>category-service</name>
-    <description>Category-service Server</description>
+    <name>zuul-server</name>
+    <description>zuul-server</description>
+
     <dependencies>
+        <!--eureka server -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <artifactId>spring-cloud-starter-eureka-server</artifactId>
         </dependency>
+
+        <!--zuul server -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-hystrix</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.patsnap.magic</groupId>
-            <artifactId>api-service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <artifactId>spring-cloud-starter-zuul</artifactId>
         </dependency>
     </dependencies>
 </project>
