@@ -23,6 +23,13 @@ public class UserController {
     @Autowired
     private IUserService iUserService;
 
+
+    @RequestMapping(value = "isExist", method = RequestMethod.POST)
+    @ResponseBody
+    public ServerResponse isExist(String userId) {
+        return iUserService.isExist(userId);
+    }
+
     @RequestMapping(value = "login")
     @ResponseBody
     public ServerResponse<User> login(String username, String password, HttpSession session) {

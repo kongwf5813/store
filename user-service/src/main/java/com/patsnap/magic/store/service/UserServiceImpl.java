@@ -124,4 +124,13 @@ public class UserServiceImpl implements IUserService {
         }
         return ServerResponse.createByErrorMessage("密码更新失败");
     }
+
+    @Override
+    public ServerResponse isExist(String userId) {
+        User user = userDao.findOne(userId);
+        if (user == null){
+            return ServerResponse.createByErrorMessage("用户Id不存在");
+        }
+        return ServerResponse.createBySuccess();
+    }
 }

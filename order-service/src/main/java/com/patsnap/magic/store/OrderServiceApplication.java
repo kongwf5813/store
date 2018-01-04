@@ -1,3 +1,5 @@
+package com.patsnap.magic.store;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
@@ -10,8 +12,11 @@ import org.springframework.cloud.netflix.hystrix.EnableHystrix;
  */
 @SpringBootApplication(scanBasePackages = "com.patsnap.magic.store")
 @EnableEurekaClient
-public class UserServiceApplication {
+@EnableHystrix
+@EnableCircuitBreaker
+@EnableFeignClients
+public class OrderServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(UserServiceApplication.class, args);
+        SpringApplication.run(OrderServiceApplication.class, args);
     }
 }
