@@ -1,14 +1,13 @@
 package com.patsnap.magic.store.controller;
 
 
-import com.netflix.discovery.converters.Auto;
 import com.patsnap.magic.store.common.Constant;
 import com.patsnap.magic.store.common.ResponseCode;
 import com.patsnap.magic.store.common.ServerResponse;
 import com.patsnap.magic.store.entity.OrderItem;
 import com.patsnap.magic.store.entity.User;
 import com.patsnap.magic.store.service.IOrderService;
-import com.patsnap.magic.store.service.IUserServicePublic;
+import com.patsnap.magic.store.fallback.IUserServicePublic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

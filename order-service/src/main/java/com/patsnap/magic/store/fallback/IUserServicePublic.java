@@ -1,7 +1,8 @@
-package com.patsnap.magic.store.service;
+package com.patsnap.magic.store.fallback;
 
 import com.patsnap.magic.store.common.ServerResponse;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -9,10 +10,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * Created by Owen on 2018/1/4.
  */
-@FeignClient("user-service")
+@FeignClient(name = "user-service", fallback = UserHystrixServiceImpl.class)
 public interface IUserServicePublic {
 
-    @RequestMapping(value = "/user/isExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/isExist/{userId}", method = RequestMethod.GET)
     @ResponseBody
-    ServerResponse isExist(String userId);
+    ServerResponse isExist(@PathVariable(value = "userId") String userId);
 }

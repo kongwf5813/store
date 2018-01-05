@@ -8,6 +8,7 @@ import com.patsnap.magic.store.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,10 +24,9 @@ public class UserController {
     @Autowired
     private IUserService iUserService;
 
-
-    @RequestMapping(value = "isExist", method = RequestMethod.POST)
+    @RequestMapping(value = "isExist/{userId}", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse isExist(String userId) {
+    public ServerResponse isExist(@PathVariable(value = "userId") String userId) {
         return iUserService.isExist(userId);
     }
 
